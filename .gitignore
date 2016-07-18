@@ -306,3 +306,4 @@ $RECYCLE.BIN/
 Debug.win32/
 Release.win32/
 ipch/
+DeBugMsg.txt

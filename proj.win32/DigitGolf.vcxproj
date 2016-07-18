@@ -167,12 +167,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
-    <ClInclude Include="..\Classes\CameraApi.h" />
-    <ClInclude Include="..\Classes\CameraApiLoad.h" />
-    <ClInclude Include="..\Classes\CameraDefine.H" />
-    <ClInclude Include="..\Classes\CameraGrabber.h" />
-    <ClInclude Include="..\Classes\CameraImage.h" />
-    <ClInclude Include="..\Classes\CameraStatus.h" />
     <ClInclude Include="..\Classes\DataAnalysisScene.h" />
     <ClInclude Include="..\Classes\DataMager.h" />
     <ClInclude Include="..\Classes\DataShowLayer.h" />

@@ -22,6 +22,7 @@ bool DrawingLayer::init()
     m_bIsDrawCircle = false;
 	m_bIsDrawAngle = false;
 	m_bIsDrawAngleEnd = false;
+	m_ActionNum = 0;
     m_PointEnd = ccp(-10,-10);
     m_cSelectedColor = ccc3(255,0,0);
 	m_pRedLayer = CCLayerColor::create(ccc4(255, 0, 0, 255), 60, 42);
@@ -130,61 +131,70 @@ void DrawingLayer::menuToggleCallBack(CCObject* pSender)
 	Ext_IsResetGG = true;
     //获取开关按钮当前的状态
     int index = m_pMenuItemToggle->getSelectedIndex();
+	m_pMenuItemToggle->setEnabled(false);
+	m_pDrawAngleItem->setEnabled(false);
+	m_pDrawRecItem->setEnabled(false);
+	m_pDrawCirItem->setEnabled(false);
+	m_pDrawingItem->setEnabled(false);
+	m_pDeleteItem->setEnabled(false);
+	m_pClsItem->setEnabled(false);
+	CCCallFunc* pCallFunc = CCCallFunc::create(this, callfunc_selector(DrawingLayer::actionCallBack));
     //CCLog("%d",index);
     if(index == 1)
     {
         //控制按钮和选色板的动画位置（进入）
-		//m_pDrawAngleItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 5)));
-		//m_pDrawRecItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 4)));
-		//m_pDrawCirItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155+62*3)));
-		//m_pDrawingItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 2)));
-		//m_pDeleteItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 1)));
-		//m_pClsItem->runAction(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 0)));
-		//m_pRedLayer->runAction(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 3)));
-		//m_pGreenLayer->runAction(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 2)));
-		//m_pBlueLayer->runAction(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 1)));
-		//m_pYellowLayer->runAction(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 0)));
-		//m_pColorBox->runAction(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 3)));
-		m_pDrawAngleItem->setPosition( ccp(1857, 155 + 62 * 5));
-		m_pDrawRecItem->setPosition(ccp(1857, 155 + 62 * 4));
-		m_pDrawCirItem->setPosition( ccp(1857, 155 + 62 * 3));
-		m_pDrawingItem->setPosition(ccp(1857, 155 + 62 * 2));
-		m_pDeleteItem->setPosition(ccp(1857, 155 + 62 * 1));
-		m_pClsItem->setPosition(ccp(1857, 155 + 62 * 0));
-		m_pRedLayer->setPosition( ccp(1857, 545 + 58 * 3));
-		m_pGreenLayer->setPosition(ccp(1857, 545 + 58 * 2));
-		m_pBlueLayer->setPosition(ccp(1857, 545 + 58 * 1));
-		m_pYellowLayer->setPosition(ccp(1857, 545 + 58 * 0));
-		m_pColorBox->setPosition(ccp(1857, 545 + 58 * 3));
+		m_pDrawAngleItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 5)), pCallFunc,NULL));
+		m_pDrawRecItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 4)), pCallFunc, NULL));
+		m_pDrawCirItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 3)), pCallFunc, NULL));
+		m_pDrawingItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 2)), pCallFunc, NULL));
+		m_pDeleteItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 1)), pCallFunc, NULL));
+		m_pClsItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 155 + 62 * 0)), pCallFunc, NULL));
+		m_pRedLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 3)), pCallFunc, NULL));
+		m_pGreenLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 2)), pCallFunc, NULL));
+		m_pBlueLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 1)), pCallFunc, NULL));
+		m_pYellowLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 0)), pCallFunc, NULL));
+		m_pColorBox->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, 545 + 58 * 3)), pCallFunc, NULL));
+
+		//m_pDrawAngleItem->setPosition( ccp(1857, 155 + 62 * 5));
+		//m_pDrawRecItem->setPosition(ccp(1857, 155 + 62 * 4));
+		//m_pDrawCirItem->setPosition( ccp(1857, 155 + 62 * 3));
+		//m_pDrawingItem->setPosition(ccp(1857, 155 + 62 * 2));
+		//m_pDeleteItem->setPosition(ccp(1857, 155 + 62 * 1));
+		//m_pClsItem->setPosition(ccp(1857, 155 + 62 * 0));
+		//m_pRedLayer->setPosition( ccp(1857, 545 + 58 * 3));
+		//m_pGreenLayer->setPosition(ccp(1857, 545 + 58 * 2));
+		//m_pBlueLayer->setPosition(ccp(1857, 545 + 58 * 1));
+		//m_pYellowLayer->setPosition(ccp(1857, 545 + 58 * 0));
+		//m_pColorBox->setPosition(ccp(1857, 545 + 58 * 3));
     }
     else
     {
         //控制按钮和选色板的动画位置（退出）
-		//m_pDrawAngleItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pDrawingItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pDeleteItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pClsItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pDrawRecItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pDrawCirItem->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
-		//m_pRedLayer->runAction(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 3)));
-		//m_pGreenLayer->runAction(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 2)));
-		//m_pBlueLayer->runAction(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 1)));
-		//m_pYellowLayer->runAction(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 0)));
-		//m_pColorBox->runAction(CCMoveTo::create(0.3, ccp(m_pColorBox->getPosition().x + 200, m_pColorBox->getPosition().y)));
-		//m_pFontBox->runAction(CCMoveTo::create(0.3, ccp(1857, -100)));
+		m_pDrawAngleItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pDrawingItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pDeleteItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pClsItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pDrawRecItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pDrawCirItem->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
+		m_pRedLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 3)), pCallFunc, NULL));
+		m_pGreenLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 2)), pCallFunc, NULL));
+		m_pBlueLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 1)), pCallFunc, NULL));
+		m_pYellowLayer->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857 + 200, 545 + 58 * 0)), pCallFunc, NULL));
+		m_pColorBox->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857 + 200, 58 * 3)), pCallFunc, NULL));
+		m_pFontBox->runAction(CCSequence::create(CCMoveTo::create(0.3, ccp(1857, -100)), pCallFunc, NULL));
 
-		m_pDrawAngleItem->setPosition(ccp(1857, -100));
-		m_pDrawingItem->setPosition(ccp(1857, -100));
-		m_pDeleteItem->setPosition(ccp(1857, -100));
-		m_pClsItem->setPosition(ccp(1857, -100));
-		m_pDrawRecItem->setPosition( ccp(1857, -100));
-		m_pDrawCirItem->setPosition(ccp(1857, -100));
-		m_pRedLayer->setPosition(ccp(1857 + 200, 545 + 58 * 3));
-		m_pGreenLayer->setPosition(ccp(1857 + 200, 545 + 58 * 2));
-		m_pBlueLayer->setPosition(ccp(1857 + 200, 545 + 58 * 1));
-		m_pYellowLayer->setPosition(ccp(1857 + 200, 545 + 58 * 0));
-		m_pColorBox->setPosition(ccp(m_pColorBox->getPosition().x + 200, m_pColorBox->getPosition().y));
-		m_pFontBox->setPosition(ccp(1857, -100));
+		//m_pDrawAngleItem->setPosition(ccp(1857, -100));
+		//m_pDrawingItem->setPosition(ccp(1857, -100));
+		//m_pDeleteItem->setPosition(ccp(1857, -100));
+		//m_pClsItem->setPosition(ccp(1857, -100));
+		//m_pDrawRecItem->setPosition( ccp(1857, -100));
+		//m_pDrawCirItem->setPosition(ccp(1857, -100));
+		//m_pRedLayer->setPosition(ccp(1857 + 200, 545 + 58 * 3));
+		//m_pGreenLayer->setPosition(ccp(1857 + 200, 545 + 58 * 2));
+		//m_pBlueLayer->setPosition(ccp(1857 + 200, 545 + 58 * 1));
+		//m_pYellowLayer->setPosition(ccp(1857 + 200, 545 + 58 * 0));
+		//m_pColorBox->setPosition(ccp(m_pColorBox->getPosition().x + 200, m_pColorBox->getPosition().y));
+		//m_pFontBox->setPosition(ccp(1857, -100));
 
         //关闭触摸事件
         this->setTouchEnabled(false);
@@ -195,6 +205,21 @@ void DrawingLayer::menuToggleCallBack(CCObject* pSender)
         m_bIsDrawRect = false;
         m_bIsDrawCircle = false;
     }
+}
+void DrawingLayer::actionCallBack()
+{
+	m_ActionNum++;
+	if (m_ActionNum == 11 || m_ActionNum == 12)
+	{
+		m_ActionNum = 0;
+		m_pMenuItemToggle->setEnabled(true);
+		m_pDrawAngleItem->setEnabled(true);
+		m_pDrawRecItem->setEnabled(true);
+		m_pDrawCirItem->setEnabled(true);
+		m_pDrawingItem->setEnabled(true);
+		m_pDeleteItem->setEnabled(true);
+		m_pClsItem->setEnabled(true);
+	}
 }
 //按钮的回调函数
 void DrawingLayer::menuCallBack(CCObject* pSender)

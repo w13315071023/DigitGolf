@@ -42,6 +42,8 @@ public:
 	bool m_bIsDrawAngleEnd;
     bool m_bIsDelete;
     bool m_bIsCls;
+
+	int m_ActionNum;
 public:
 	//static DrawingLayer* shareDrawingLayer(void);
 	DrawingLayer(void);
@@ -50,6 +52,7 @@ public:
     //按钮和开关按钮的回调函数
     void menuToggleCallBack(CCObject* pSender);
     void menuCallBack(CCObject* pSender);
+	void actionCallBack();
     //类初始化
     virtual bool init();
     //触摸事件
