@@ -182,5 +182,12 @@
     <ClInclude Include="..\Classes\VideoClass.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DigitGolf.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\digitgolf.ico" />
   </ItemGroup>
 </Project>

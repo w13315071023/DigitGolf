@@ -189,6 +189,16 @@ void HelloWorld::menuEndCallback(CCObject* pSender)
 	{
 		MovieVideoLayer::m_Camera2->Destructor();
 	}
+	if (PostureAnalysisScene::m_pFrontMovieVideoLayer)
+	{
+		delete PostureAnalysisScene::m_pFrontMovieVideoLayer;
+		PostureAnalysisScene::m_pFrontMovieVideoLayer = NULL;
+	}
+	if (PostureAnalysisScene::m_pSideMovieVideoLayer)
+	{
+		delete PostureAnalysisScene::m_pSideMovieVideoLayer;
+		PostureAnalysisScene::m_pSideMovieVideoLayer = NULL;
+	}
 	SerialMager::getInstence()->unLoadInstence();
 	CCDirector::sharedDirector()->end();
 }
