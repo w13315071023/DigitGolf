@@ -170,7 +170,6 @@ void HelloWorld::menuCallback(CCObject* pSender)
 		MovieVideoLayer::m_Camera2->setExposureTime(Ext_VideoExposureTime);
 		MovieVideoLayer::m_Camera2->setGain(Ext_VideoGain);
 	}
-
 	printf("转到姿势分析界面\n");
 	CCDirector::sharedDirector()->replaceScene(PostureAnalysisScene::CreateScene());
 }

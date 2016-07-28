@@ -23,4 +23,5 @@ public:
 	void Record(bool isRecord);
 	void TransData();
 	void RecordOk();
+	void ResetVideoSize();
 };

@@ -135,3 +135,23 @@ void MovieVideoLayer::RecordOk()
 	}
 	m_VideoIter = m_VideoList.begin();
 }
+void MovieVideoLayer::ResetVideoSize()
+{
+	int curVideoSize = m_VideoList.size();
+	if (curVideoSize> Ext_VideoSize * Ext_StepNum)
+	{
+		curVideoSize = m_VideoList.size();
+		for (size_t i = 0; i < curVideoSize - Ext_VideoSize * Ext_StepNum; i++)
+		{
+			av_free(m_VideoList.back());
+			m_VideoList.pop_back();
+		}
+	}
+	if (curVideoSize< Ext_VideoSize * Ext_StepNum)
+	{
+		for (size_t i = 0; i < Ext_VideoSize * Ext_StepNum - curVideoSize; i++)
+		{
+			m_VideoList.push_back((unsigned char*)av_malloc(MovieVideoLayer::m_Camera1->BufferSize));
+		}
+	}
+}

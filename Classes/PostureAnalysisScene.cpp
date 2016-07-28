@@ -82,6 +82,7 @@ bool PostureAnalysisScene::init()
 	{
 		m_pFrontMovieVideoLayer = MovieVideoLayer::create(FRONT);
 	}
+	m_pFrontMovieVideoLayer->ResetVideoSize();
 	this->addChild(m_pFrontDemoVideoLayer);
 	this->addChild(m_pFrontMovieVideoLayer);
 	if (Ext_cameraNum != 0)
@@ -192,21 +193,15 @@ bool PostureAnalysisScene::init()
 			m_pSideDemoVideoLayer->retain();
 		}
 
-		if (Ext_IsFrontCamera == m_bIsTurnCamera)
+		if (!m_pSideMovieVideoLayer)
 		{
-			if (!m_pSideMovieVideoLayer)
-			{
-				m_pSideMovieVideoLayer = MovieVideoLayer::create(SIDE);
-			}
-			this->addChild(m_pSideMovieVideoLayer);
+			m_pSideMovieVideoLayer = MovieVideoLayer::create(SIDE);
 		}
-		else
+		m_pSideMovieVideoLayer->ResetVideoSize();
+		this->addChild(m_pSideMovieVideoLayer);
+
+		if (Ext_IsFrontCamera != m_bIsTurnCamera)
 		{
-			if (!m_pSideMovieVideoLayer)
-			{
-				m_pSideMovieVideoLayer = MovieVideoLayer::create(SIDE);
-			}
-			this->addChild(m_pSideMovieVideoLayer);
 			swap(m_pSideMovieVideoLayer,m_pFrontMovieVideoLayer);
 			m_bIsTurnCamera = Ext_IsFrontCamera;
 		}
@@ -359,7 +354,7 @@ bool PostureAnalysisScene::init()
 	//	pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
 	//	m_pMenu->addChild(pDataAnalysisItem);
 	//}
-	
+
 	this->schedule(schedule_selector(PostureAnalysisScene::Update), m_curSingle);
 	Ext_IsThreadOn = true;
 
