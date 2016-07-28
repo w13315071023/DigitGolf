@@ -57,6 +57,7 @@ bool LodingScene::init()
 		Ext_VideoGain = doc["VideoGain"].GetInt();
 		Ext_VideoExposureTime = doc["VideoExposureTime"].GetDouble();
 		Ext_ToPixels = doc["ToPixels"].GetDouble();
+		Ext_StepNum = doc["StepNum"].GetInt();
 	}
 	CCSprite* pBackGround = CCSprite::create("HomeUI/Bg.png");
 	pBackGround->setPosition(ccp(VISIBLEW / 2, VISIBLEH / 2));

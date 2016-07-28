@@ -48,7 +48,7 @@ void VideoClass::ShowVideo()
 			480,
 			CCSize(630, 470));
 		m_pSprite->initWithTexture(m_pTexture);
-		m_VideoIter++;
+		m_VideoIter += Ext_StepNum;
 	}
 	else
 	{

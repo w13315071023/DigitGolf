@@ -51,7 +51,7 @@ bool MovieVideoLayer::init(int Direction)
 		m_Camera = m_Camera2; 
 	}
 
-	for (size_t i = 0; i < Ext_VideoSize * 2; i++)
+	for (size_t i = 0; i < Ext_VideoSize * Ext_StepNum; i++)
 	{
 		unsigned char* pVideoRGB24 = (unsigned char*)av_malloc(m_Camera->BufferSize);
 		m_VideoList.push_back(pVideoRGB24);
@@ -96,13 +96,13 @@ void MovieVideoLayer::TransData()
 	{
 		return;
 	}
-	if (m_TransIndex == Ext_VideoSize * 2)
+	if (m_TransIndex == Ext_VideoSize * Ext_StepNum)
 	{
 		m_TransIndex = 0;
 		return;
 	}
 	int curIndex = 0;
-	curIndex = (m_Camera->getBuffIndex() - Ext_VideoSize * 2 + m_TransIndex) % 300;
+	curIndex = (m_Camera->getBuffIndex() - Ext_VideoSize * Ext_StepNum + m_TransIndex) % 300;
 	curIndex = curIndex < 0 ? 299 + curIndex : curIndex;
 
 	m_FrameImageHead = m_Camera->getBufferByIndex(curIndex)->FrameHead;
@@ -111,20 +111,20 @@ void MovieVideoLayer::TransData()
 		m_pFrameImageRGB,
 		&m_FrameImageHead);
 	swap(m_pFrameImageRGB, m_VideoList[m_TransIndex]);
-	m_TransIndex++;
+	m_TransIndex += Ext_StepNum;
 }
 void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
 	this->Record(false);
-	for (size_t i = m_TransIndex; i < Ext_VideoSize * 2; i++)
+	for (size_t i = m_TransIndex; i < Ext_VideoSize * Ext_StepNum; i += Ext_StepNum)
 	{
 		if (i == m_TransIndex+20)
 		{
 			m_TransIndex = i;
 			break;
 		}
-		curIndex = (m_Camera->getBuffIndex() - Ext_VideoSize * 2 + i) % 300;
+		curIndex = (m_Camera->getBuffIndex() - Ext_VideoSize * Ext_StepNum + i) % 300;
 		curIndex = curIndex < 0 ? 299 + curIndex : curIndex;
 		m_FrameImageHead = m_Camera->getBufferByIndex(curIndex)->FrameHead;
 		CameraImageProcess(m_Camera->m_hCamera,

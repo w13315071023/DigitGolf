@@ -194,6 +194,7 @@ void SettingScene::onExit()
 	object.AddMember("VideoGain", Ext_VideoGain, allocator);
 	object.AddMember("VideoExposureTime", Ext_VideoExposureTime, allocator);
 	object.AddMember("ToPixels", Ext_ToPixels, allocator);
+	object.AddMember("StepNum", Ext_StepNum, allocator);
 
 	saveValue(object, "Setting.json");
 }

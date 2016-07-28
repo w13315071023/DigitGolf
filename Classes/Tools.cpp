@@ -2,19 +2,21 @@
 #include "GuangGao.h"
 
 extern int instenceTarget = 140;
+extern int Ext_StepNum = 1;
 extern INT	Ext_cameraNum = 0; 
-extern bool Ext_IsGolfXI = false;
-extern bool Ext_IsResetGG = false;
-extern bool Ext_IsThreadOn = false;
-extern bool Ext_IsTurnEnd = false;
-extern bool Ext_IsRecordBegin = false;
 extern int Ext_VideoSize = 0;
 extern int Ext_VideoSleep = 1000;
 extern int Ext_SerialThreshold = 800;
 extern int Ext_VideoGain = 64;
 extern int Ext_VideoExposureTime = 15000;
+
 extern float Ext_ToPixels = 0.3;
 
+extern bool Ext_IsGolfXI = false;
+extern bool Ext_IsResetGG = false;
+extern bool Ext_IsThreadOn = false;
+extern bool Ext_IsTurnEnd = false;
+extern bool Ext_IsRecordBegin = false;
 extern bool Ext_TiaoShi = true;
 extern bool Ext_IsFrontCamera = true;
 extern bool Ext_IsTurnCamera = false;

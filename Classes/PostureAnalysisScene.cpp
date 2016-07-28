@@ -620,19 +620,29 @@ void PostureAnalysisScene::Update(float dt)
 		{
 			m_pSideDemoVideoLayer->ShowDemoVideo();
 		}
-		for (size_t i = 0; i < 2; i++)
+		if (Ext_cameraNum &&!m_pFrontMovieVideoLayer->m_IsPlayOver)
 		{
-			if (Ext_cameraNum &&!m_pFrontMovieVideoLayer->m_IsPlayOver)
-			{
-				m_pFrontMovieVideoLayer->ShowVideo();
-				m_pFrontMovieVideoLayer->TransData();
-			}
-			if (Ext_cameraNum == 2 && !m_pSideMovieVideoLayer->m_IsPlayOver)
-			{
-				m_pSideMovieVideoLayer->ShowVideo();
-				m_pSideMovieVideoLayer->TransData();
-			}
+			m_pFrontMovieVideoLayer->ShowVideo();
+			m_pFrontMovieVideoLayer->TransData();
 		}
+		if (Ext_cameraNum == 2 && !m_pSideMovieVideoLayer->m_IsPlayOver)
+		{
+			m_pSideMovieVideoLayer->ShowVideo();
+			m_pSideMovieVideoLayer->TransData();
+		}
+		//for (size_t i = 0; i < 2; i++)
+		//{
+		//	if (Ext_cameraNum &&!m_pFrontMovieVideoLayer->m_IsPlayOver)
+		//	{
+		//		m_pFrontMovieVideoLayer->ShowVideo();
+		//		m_pFrontMovieVideoLayer->TransData();
+		//	}
+		//	if (Ext_cameraNum == 2 && !m_pSideMovieVideoLayer->m_IsPlayOver)
+		//	{
+		//		m_pSideMovieVideoLayer->ShowVideo();
+		//		m_pSideMovieVideoLayer->TransData();
+		//	}
+		//}
 		if (m_pFrontDemoVideoLayer->m_IsPlayOver &&
 			(Ext_cameraNum != 2 || m_pSideDemoVideoLayer->m_IsPlayOver) &&
 			(!Ext_cameraNum || m_pFrontMovieVideoLayer->m_IsPlayOver))
@@ -700,7 +710,7 @@ void PostureAnalysisScene::CallbackREW(CCObject* pSender)
 		pToggle->setSelectedIndex(0);
 		this->CallbackPause(pToggle);
 	}
-	for (size_t i = 0; i < 2; i++)
+	for (size_t i = 0; i < Ext_StepNum; i++)
 	{
 		if (!m_pFrontDemoVideoLayer->m_IsPlayOver&&m_pFrontDemoVideoLayer->m_VideoIter != m_pFrontDemoVideoLayer->m_VideoList.begin())
 		{
@@ -711,7 +721,7 @@ void PostureAnalysisScene::CallbackREW(CCObject* pSender)
 			m_pSideDemoVideoLayer->m_VideoIter--;
 		}
 	}
-	for (size_t i = 0; i < 4; i++)
+	for (size_t i = 0; i < Ext_StepNum*2; i++)
 	{
 		if (Ext_cameraNum &&!m_pFrontMovieVideoLayer->m_IsPlayOver&&m_pFrontMovieVideoLayer->m_VideoIter != m_pFrontMovieVideoLayer->m_VideoList.begin())
 		{
