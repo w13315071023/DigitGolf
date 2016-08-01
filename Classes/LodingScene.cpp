@@ -37,7 +37,6 @@ bool LodingScene::init()
 	printf("≥ı ºªØLodingScene\n");
 	//GolfXIMager::getInstence();
 	SerialMager::getInstence();
-	ResetGGMager::getInstance();
 	if (Ext_cameraNum != 0)
 	{
 		MovieVideoLayer::m_Camera1 = new RecordClass();
