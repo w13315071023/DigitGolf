@@ -102,7 +102,7 @@ void MovieVideoLayer::TransData()
 		return;
 	}
 	int curIndex = m_Camera->getBuffIndex() - Ext_VideoSize * Ext_StepNum + m_TransIndex;
-	curIndex = curIndex < 0 ? 299 + curIndex : curIndex;
+	curIndex = curIndex < 0 ? 300 + curIndex : curIndex;
 
 	m_FrameImageHead = m_Camera->getBufferByIndex(curIndex)->FrameHead;
 	CameraImageProcess(m_Camera->m_hCamera,
@@ -124,7 +124,7 @@ void MovieVideoLayer::RecordOk()
 			break;
 		}
 		curIndex = m_Camera->getBuffIndex() - Ext_VideoSize * Ext_StepNum + i;
-		curIndex = curIndex < 0 ? 299 + curIndex : curIndex;
+		curIndex = curIndex < 0 ? 300 + curIndex : curIndex;
 		m_FrameImageHead = m_Camera->getBufferByIndex(curIndex)->FrameHead;
 		CameraImageProcess(m_Camera->m_hCamera,
 			m_Camera->getBufferByIndex(curIndex)->FrameData,
