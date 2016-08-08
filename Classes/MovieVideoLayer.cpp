@@ -116,6 +116,14 @@ void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
 	this->Record(false);
+	if (m_Camera == m_Camera1)
+	{
+		pthread_mutex_lock(&m_Camera1->m_mutex1);
+	}
+	else
+	{
+		pthread_mutex_lock(&m_Camera2->m_mutex2);
+	}
 	for (size_t i = m_TransIndex; i < Ext_VideoSize * Ext_StepNum; i += Ext_StepNum)
 	{
 		if (i == m_TransIndex+20)
@@ -131,6 +139,14 @@ void MovieVideoLayer::RecordOk()
 			m_pFrameImageRGB,
 			&m_FrameImageHead);
 		swap(m_pFrameImageRGB, m_VideoList[i]);
+	}
+	if (m_Camera == m_Camera1)
+	{
+		pthread_mutex_unlock(&m_Camera1->m_mutex1);
+	}
+	else
+	{
+		pthread_mutex_unlock(&m_Camera2->m_mutex2);
 	}
 	m_VideoIter = m_VideoList.begin();
 }

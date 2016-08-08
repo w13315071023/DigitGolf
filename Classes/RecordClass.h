@@ -1,5 +1,6 @@
 #pragma once
 #include "Tools.h"
+#include <pthread.h>
 class RecordClass
 {
 public:
@@ -7,6 +8,9 @@ public:
 	CameraHandle    m_hCamera;
 	INT				cameraNum;
 	tSdkCameraCapbility m_sCameraInfo;
+
+	static pthread_mutex_t m_mutex1;
+	static pthread_mutex_t m_mutex2;
 
 	float m_curTime;
 	float m_lastTime;
