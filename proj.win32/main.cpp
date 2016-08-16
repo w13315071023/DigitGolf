@@ -40,14 +40,14 @@ static void DumpMiniDump(HANDLE hFile, PEXCEPTION_POINTERS excpInfo)
 	}
 }
 
-int  cocosMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPTSTR    lpCmdLine,
-	int       nCmdShow)
-//int APIENTRY _tWinMain(HINSTANCE hInstance,
+//int  cocosMain(HINSTANCE hInstance,
 //	HINSTANCE hPrevInstance,
 //	LPTSTR    lpCmdLine,
 //	int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPTSTR    lpCmdLine,
+	int       nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -81,55 +81,55 @@ int  cocosMain(HINSTANCE hInstance,
 
 }
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                       HINSTANCE hPrevInstance,
-                       LPTSTR    lpCmdLine,
-                       int       nCmdShow)
-{
-	Ext_TiaoShi = false;
-	if (!Ext_TiaoShi)
-	{
-		freopen("DeBugMsg.txt", "w", stdout);
-		printf("hello, world!");
-	}
-	if (Ext_TiaoShi && AllocConsole())
-	{
-		freopen("CONOUT$", "w", stdout);
-		printf("hello, world!");
-	}
-
-	printf("tWinMain");
-
-	HANDLE m_hSingleProMutex;
-	m_hSingleProMutex = CreateMutex(NULL, TRUE, L"SinglePro");
-	if (m_hSingleProMutex)
-	{
-		if (ERROR_ALREADY_EXISTS == GetLastError())
-		{
-			exit(0);
-		}
-	}
-
-	HANDLE hFile = CreateFile(_T("MiniDump.dmp"), GENERIC_READ | GENERIC_WRITE,
-		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	int code;
-	__try
-	{
-		cocosMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-	}
-	__except (code = GetExceptionCode(), DumpMiniDump(hFile, GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) //�������쳣, ��¼�쳣��code, ����dump!!
-	{
-		printf("%x\n", code);
-		wchar_t msg[512];
-		wsprintf(msg, L"Exception happened. Exception code is %x", code);
-		MessageBox(NULL, msg, L"Exception", MB_OK);
-	}
-	CloseHandle(hFile);
-	getchar();
-
-	if (Ext_TiaoShi)
-	{
-		FreeConsole();
-	}
-	return 0;
-}
+//int APIENTRY _tWinMain(HINSTANCE hInstance,
+//                       HINSTANCE hPrevInstance,
+//                       LPTSTR    lpCmdLine,
+//                       int       nCmdShow)
+//{
+//	Ext_TiaoShi = false;
+//	if (!Ext_TiaoShi)
+//	{
+//		freopen("DeBugMsg.txt", "w", stdout);
+//		printf("hello, world!");
+//	}
+//	if (Ext_TiaoShi && AllocConsole())
+//	{
+//		freopen("CONOUT$", "w", stdout);
+//		printf("hello, world!");
+//	}
+//
+//	printf("tWinMain");
+//
+//	HANDLE m_hSingleProMutex;
+//	m_hSingleProMutex = CreateMutex(NULL, TRUE, L"SinglePro");
+//	if (m_hSingleProMutex)
+//	{
+//		if (ERROR_ALREADY_EXISTS == GetLastError())
+//		{
+//			exit(0);
+//		}
+//	}
+//
+//	HANDLE hFile = CreateFile(_T("MiniDump.dmp"), GENERIC_READ | GENERIC_WRITE,
+//		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+//	int code;
+//	__try
+//	{
+//		cocosMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+//	}
+//	__except (code = GetExceptionCode(), DumpMiniDump(hFile, GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) //�������쳣, ��¼�쳣��code, ����dump!!
+//	{
+//		printf("%x\n", code);
+//		wchar_t msg[512];
+//		wsprintf(msg, L"Exception happened. Exception code is %x", code);
+//		MessageBox(NULL, msg, L"Exception", MB_OK);
+//	}
+//	CloseHandle(hFile);
+//	getchar();
+//
+//	if (Ext_TiaoShi)
+//	{
+//		FreeConsole();
+//	}
+//	return 0;
+//}

@@ -1,6 +1,7 @@
 #include "PostureAnalysisScene.h"
 #include "GolfXIMager.h"
 #include "DataMager.h"
+#include "UpLode.h"
 
 DrawingLayer* PostureAnalysisScene::m_pDrawingLayer = NULL;
 MovieVideoLayer* PostureAnalysisScene::m_pFrontMovieVideoLayer = NULL;
@@ -64,10 +65,6 @@ bool PostureAnalysisScene::init()
 	m_bIsStepPlay = false;
 	m_bIsVisibleMenu = true;
 	m_bSetMode = true;
-	m_pUpMoveBy = CCMoveBy::create(0.3,ccp(0,100));
-	m_pUpMoveBy->retain();
-	m_pDownMoveBy = CCMoveBy::create(0.3, ccp(0, -100));
-	m_pDownMoveBy->retain();
 
 	CCSprite* beijing1 = CCSprite::create("VideoUI/beijing1.png");
 	beijing1->setPosition(ccp(VISIBLEW/2,VISIBLEH/2));
@@ -332,17 +329,26 @@ bool PostureAnalysisScene::init()
 		m_pMenu->addChild(m_pFrontDemoViewItem);
 	}
 
-	if (Ext_IsGolfXI == true)
-	{
-		CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
-			"VideoUI/shujufenxi1.png",
-			"VideoUI/shujufenxi2.png",
-			this,
-			menu_selector(PostureAnalysisScene::menuCallback));
-		pDataAnalysisItem->setPosition(ccp(116, 915));
-		pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
-		m_pMenu->addChild(pDataAnalysisItem);
-	}
+	//if (Ext_IsGolfXI == true)
+	//{
+	//	CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
+	//		"VideoUI/shujufenxi1.png",
+	//		"VideoUI/shujufenxi2.png",
+	//		this,
+	//		menu_selector(PostureAnalysisScene::menuCallback));
+	//	pDataAnalysisItem->setPosition(ccp(116, 915));
+	//	pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
+	//	m_pMenu->addChild(pDataAnalysisItem);
+	//}
+	CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
+		"VideoUI/shujufenxi1.png",
+		"VideoUI/shujufenxi2.png",
+		this,
+		menu_selector(PostureAnalysisScene::menuCallback));
+	pDataAnalysisItem->setPosition(ccp(116, 915));
+	pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
+	m_pMenu->addChild(pDataAnalysisItem);
+
 	//else
 	//{
 	//	CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
@@ -558,8 +564,14 @@ void PostureAnalysisScene::menuCallback(CCObject* pSender)
 	case MENUTAG_DataAnalysis:
 		{
 			Ext_IsThreadOn = false;
-			this->unschedule(schedule_selector(PostureAnalysisScene::Update));
-			CCDirector::sharedDirector()->replaceScene(DataAnalysisScene::CreateScene());
+			//this->unschedule(schedule_selector(PostureAnalysisScene::Update));
+			//CCDirector::sharedDirector()->replaceScene(DataAnalysisScene::CreateScene());
+			m_pFrontMovieVideoLayer->SeveVideo();
+			if (Ext_cameraNum == 2)
+			{
+				m_pSideMovieVideoLayer->SeveVideo();
+			}
+			CCDirector::sharedDirector()->pushScene(UpLode::getScene());
 		}
         break;
     case MENUTAG_Back:
@@ -707,13 +719,13 @@ void PostureAnalysisScene::CallbackREW(CCObject* pSender)
 	}
 	for (size_t i = 0; i < Ext_StepNum; i++)
 	{
-		if (!m_pFrontDemoVideoLayer->m_IsPlayOver&&m_pFrontDemoVideoLayer->m_VideoIter != m_pFrontDemoVideoLayer->m_VideoList.begin())
+		if (!m_pFrontDemoVideoLayer->m_IsPlayOver&&m_pFrontDemoVideoLayer->m_DemoVideoIter != m_pFrontDemoVideoLayer->m_DemoVideoList.begin())
 		{
-			m_pFrontDemoVideoLayer->m_VideoIter--;
+			m_pFrontDemoVideoLayer->m_DemoVideoIter--;
 		}
-		if (Ext_cameraNum == 2 && !m_pSideDemoVideoLayer->m_IsPlayOver&&m_pSideDemoVideoLayer->m_VideoIter != m_pSideDemoVideoLayer->m_VideoList.begin())
+		if (Ext_cameraNum == 2 && !m_pSideDemoVideoLayer->m_IsPlayOver&&m_pSideDemoVideoLayer->m_DemoVideoIter != m_pSideDemoVideoLayer->m_DemoVideoList.begin())
 		{
-			m_pSideDemoVideoLayer->m_VideoIter--;
+			m_pSideDemoVideoLayer->m_DemoVideoIter--;
 		}
 	}
 	for (size_t i = 0; i < Ext_StepNum*2; i++)

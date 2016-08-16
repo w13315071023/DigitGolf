@@ -99,6 +99,17 @@ enum CUETYPE
     CUETYPE_TIEGAN = 140,
     CUETYPE_WAQIGAN = 110,
 };
+typedef struct _OutputStream
+{
+	AVStream* st;
+	AVFrame* videoFrame;
+	AVFrame* audioFrame;
+
+	int64_t next_pts;
+	float t, tincr,tinct2;
+	struct SwsContext* sws_ctx;
+	struct SwrContext* swr_ctx;
+}OutputStream;
 struct ColorPoint
 {
     CCPoint pos;

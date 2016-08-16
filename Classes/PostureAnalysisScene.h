@@ -38,8 +38,6 @@ public:
 	CCMenuItemImage* m_pFrontViewItem2;
 	CCMenuItemImage* m_pFrontDemoViewItem;
 	MyMenu* m_pMenu;
-	CCMoveBy* m_pUpMoveBy;
-	CCMoveBy* m_pDownMoveBy;
 	float m_curSingle;
 	unsigned int m_curMsg;
 

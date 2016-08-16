@@ -18,6 +18,14 @@ DemoVideoLayer* DemoVideoLayer::create(int Direction)
 }
 DemoVideoLayer::~DemoVideoLayer()
 {
+	if (!m_DemoVideoList.empty())
+	{
+		m_DemoVideoIter = m_DemoVideoList.begin();
+		for (m_DemoVideoIter; m_DemoVideoIter != m_DemoVideoList.end(); m_DemoVideoIter++)
+		{
+			av_free(*m_DemoVideoIter);
+		}
+	}
 }
 bool DemoVideoLayer::init(int Direction)
 {
@@ -123,7 +131,7 @@ bool DemoVideoLayer::LoadVideo()
 				m_Width = pCodecCtx->width;
 				m_Height = pCodecCtx->height;
 				unsigned char* pVideoRGB24 = buf;
-				m_VideoList.push_back(pVideoRGB24);
+				m_DemoVideoList.push_back(pVideoRGB24);
 
 				sws_scale(
 					pSwsCtx,
@@ -137,8 +145,8 @@ bool DemoVideoLayer::LoadVideo()
 		}
 		av_packet_unref(&packet);
 	}
-	m_VideoIter = m_VideoList.begin();
-	Ext_VideoSize = m_VideoList.size();
+	m_DemoVideoIter = m_DemoVideoList.begin();
+	Ext_VideoSize = m_DemoVideoList.size();
 
 	sws_freeContext(pSwsCtx);
 	av_free(pFrame);

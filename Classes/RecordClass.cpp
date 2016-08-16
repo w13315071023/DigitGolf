@@ -15,12 +15,15 @@ RecordClass::~RecordClass(void)
 void RecordClass::Destructor()
 {
 	CameraUnInit(m_hCamera);
-
-	for (size_t i = 0; i < 300; i++)
+	if (!m_Buffer.empty())
 	{
-		CameraAlignFree(m_Buffer[i]->FrameData);
+		for (size_t i = 0; i < 300; i++)
+		{
+			CameraAlignFree(m_Buffer[i]->FrameData);
+		}
+		m_Buffer.clear();
 	}
-	m_Buffer.clear();
+	
 }
 bool RecordClass::init(tSdkCameraDevInfo CameraInfo)
 {

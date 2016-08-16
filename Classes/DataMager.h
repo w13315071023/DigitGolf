@@ -11,8 +11,8 @@ public:
 	GENDER m_curGender;
 	CUETYPE m_curCuetype;
 	map<int,GolfData> m_GolfDataMap;
-	list<unsigned char*> m_VideoListFront;
-	list<unsigned char*> m_VideoListSide;
+	list<unsigned char*> m_DemoVideoListFront;
+	list<unsigned char*> m_DemoVideoListSide;
 public:
 	~DataMager(void);
 	static DataMager* shareDataMager();

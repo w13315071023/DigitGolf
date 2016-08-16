@@ -81,7 +81,7 @@
       <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;DbgHelp.Lib;JHCap2.lib;MVCAMSDK.lib;postproc.lib;SerialDll.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;DbgHelp.Lib;JHCap2.lib;MVCAMSDK.lib;postproc.lib;SerialDll.lib;swresample.lib;swscale.lib;qrcodelib.lib;libmp4v2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);..\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -114,7 +114,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
       <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;DbgHelp.Lib;JHCap2.lib;MVCAMSDK.lib;postproc.lib;SerialDll.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;DbgHelp.Lib;JHCap2.lib;MVCAMSDK.lib;postproc.lib;SerialDll.lib;swresample.lib;swscale.lib;qrcodelib.lib;libmp4v2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);..\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -161,6 +161,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\TargetLayer.cpp" />
     <ClCompile Include="..\Classes\Tools.cpp" />
     <ClCompile Include="..\Classes\UINode.cpp" />
+    <ClCompile Include="..\Classes\UpLode.cpp" />
     <ClCompile Include="..\Classes\VideoClass.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -192,6 +193,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\TargetLayer.h" />
     <ClInclude Include="..\Classes\Tools.h" />
     <ClInclude Include="..\Classes\UINode.h" />
+    <ClInclude Include="..\Classes\UpLode.h" />
     <ClInclude Include="..\Classes\VideoClass.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />

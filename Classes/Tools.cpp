@@ -21,7 +21,6 @@ extern bool Ext_TiaoShi = true;
 extern bool Ext_IsFrontCamera = true;
 extern bool Ext_IsTurnCamera = false;
 
-
 string GBKToUTF8(const string& strGBK)
 {
 	string strOutUTF8 = "";

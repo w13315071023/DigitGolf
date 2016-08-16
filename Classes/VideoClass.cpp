@@ -23,14 +23,6 @@ VideoClass::VideoClass(void)
 VideoClass::~VideoClass(void)
 {
 	m_pTexture->release();
-	if (!m_VideoList.empty())
-	{
-		m_VideoIter = m_VideoList.begin();
-		for (m_VideoIter; m_VideoIter != m_VideoList.end(); m_VideoIter++)
-		{
-			av_free(*m_VideoIter);
-		}
-	}
 }
 void VideoClass::ShowVideo()
 {
@@ -42,7 +34,7 @@ void VideoClass::ShowVideo()
 	if (m_VideoIter != m_VideoList.end())
 	{
 		m_pTexture->updateVideoWithData(
-			*m_VideoIter,
+			(*m_VideoIter)->FrameData,
 			kTexture2DPixelFormat_RGB888,
 			640,
 			480,
@@ -58,26 +50,26 @@ void VideoClass::ShowVideo()
 }
 void VideoClass::ShowDemoVideo()
 {                                       
-	if (m_VideoList.empty())
+	if (m_DemoVideoList.empty())
 	{
 		m_IsPlayOver = true;
 		return;
 	}
-	if (m_VideoIter != m_VideoList.end())
+	if (m_DemoVideoIter != m_DemoVideoList.end())
 	{
 		m_pTexture->updateVideoWithData(
-			*m_VideoIter,
+			*m_DemoVideoIter,
 			kTexture2DPixelFormat_RGB888,
 			m_Width,
 			m_Height,
 			CCSize(630, 470));
 		m_pSprite->initWithTexture(m_pTexture);
-		m_VideoIter++;
+		m_DemoVideoIter++;
 	}
 	else
 	{
 		m_IsPlayOver = true;
-		m_VideoIter = m_VideoList.begin();
+		m_DemoVideoIter = m_DemoVideoList.begin();
 	}
 }
 void VideoClass::ReSetVideo()
@@ -87,6 +79,6 @@ void VideoClass::ReSetVideo()
 }
 void VideoClass::ReSetDemoVideo()
 {
-	this->m_VideoIter = this->m_VideoList.begin();
+	this->m_DemoVideoIter = this->m_DemoVideoList.begin();
 	this->ShowDemoVideo();
 }

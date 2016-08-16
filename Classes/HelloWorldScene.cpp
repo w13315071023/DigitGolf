@@ -180,6 +180,7 @@ void HelloWorld::menuEndCallback(CCObject* pSender)
 		return;
 	}
 	Ext_IsTurnEnd = true;
+	sws_freeContext(MovieVideoLayer::pSwsCtx);
 	if (MovieVideoLayer::m_Camera1)
 	{
 		MovieVideoLayer::m_Camera1->Destructor();

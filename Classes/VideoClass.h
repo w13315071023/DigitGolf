@@ -10,8 +10,10 @@ public:
 	bool m_IsRecord;
 	float m_Width;
 	float m_Height;
-	vector<unsigned char*> m_VideoList;
-	vector<unsigned char*>::iterator m_VideoIter;
+	vector<unsigned char*> m_DemoVideoList;
+	vector<unsigned char*>::iterator m_DemoVideoIter;
+	vector<VideoRAW*> m_VideoList;
+	vector<VideoRAW*>::iterator m_VideoIter;
 public:
 	VideoClass(void);
 	virtual ~VideoClass(void);

@@ -36,7 +36,7 @@ typedef int CameraSdkStatus;
 #define CAMERA_STATUS_SIZE_DISMATCH             -11  // 获得图像数据长度和定义的尺寸不匹配
 #define CAMERA_STATUS_TIME_OUT                  -12  // 超时错误
 #define CAMERA_STATUS_IO_ERROR                  -13  // 硬件IO错误
-#define CAMERA_STATUS_COMM_ERROR                -14  // 通讯错误
+#define CAMERA_STATUS_COMM_ERROR                -14  // 通讯错误.0
 #define CAMERA_STATUS_BUS_ERROR                 -15  // 总线错误
 #define CAMERA_STATUS_NO_DEVICE_FOUND           -16  // 没有发现设备
 #define CAMERA_STATUS_NO_LOGIC_DEVICE_FOUND     -17  // 未找到逻辑设备
