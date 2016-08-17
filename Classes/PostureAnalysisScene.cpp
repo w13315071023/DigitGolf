@@ -344,9 +344,8 @@ bool PostureAnalysisScene::init()
 		"VideoUI/shujufenxi1.png",
 		"VideoUI/shujufenxi2.png",
 		this,
-		menu_selector(PostureAnalysisScene::menuCallback));
+		menu_selector(PostureAnalysisScene::CallbackUpload));
 	pDataAnalysisItem->setPosition(ccp(116, 915));
-	pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
 	m_pMenu->addChild(pDataAnalysisItem);
 
 	//else
@@ -563,15 +562,7 @@ void PostureAnalysisScene::menuCallback(CCObject* pSender)
 		break;
 	case MENUTAG_DataAnalysis:
 		{
-			Ext_IsThreadOn = false;
-			//this->unschedule(schedule_selector(PostureAnalysisScene::Update));
-			//CCDirector::sharedDirector()->replaceScene(DataAnalysisScene::CreateScene());
-			m_pFrontMovieVideoLayer->SeveVideo();
-			if (Ext_cameraNum == 2)
-			{
-				m_pSideMovieVideoLayer->SeveVideo();
-			}
-			CCDirector::sharedDirector()->pushScene(UpLode::getScene());
+			
 		}
         break;
     case MENUTAG_Back:
@@ -869,4 +860,8 @@ void PostureAnalysisScene::CallbackSetMode(CCObject* pSender)
 		m_pDanjian->setEnabled(true);
 		m_pXunhuan->setEnabled(false);
 	}
+}
+void PostureAnalysisScene::CallbackUpload(CCObject* pSender)
+{
+	CCDirector::sharedDirector()->pushScene(UpLode::getScene());
 }

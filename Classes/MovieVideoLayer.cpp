@@ -366,7 +366,7 @@ void MovieVideoLayer::SeveVideo()
 	av_write_trailer(fmt_ctx);
 
 	avcodec_close(video_st.st->codec);
-	av_freep(&m_pYUVFrame->data);
+	av_freep(m_pYUVFrame->data);
 	av_frame_free(&m_pYUVFrame);
 	av_frame_free(&m_pRGBFrame);
 	if (!(fmt->flags & AVFMT_NOFILE))

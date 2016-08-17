@@ -71,5 +71,6 @@ public:
     void CallbackPause(CCObject* pSender);
 	void CallbackPreview(CCObject* pSender);
 	void CallbackSetMode(CCObject* pSender);
+	void CallbackUpload(CCObject* pSender);
 };
 

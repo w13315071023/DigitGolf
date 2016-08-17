@@ -58,6 +58,11 @@ void UpLode::update(float dt)
 	switch (m_time)
 	{
 		case 0:
+			PostureAnalysisScene::m_pFrontMovieVideoLayer->SeveVideo();
+			if (Ext_cameraNum == 2)
+			{
+				PostureAnalysisScene::m_pSideMovieVideoLayer->SeveVideo();
+			}
 			sendRequest();
 			m_time = 1;
 		break;
@@ -303,7 +308,7 @@ void UpLode::uploadVideo(string name)
 	CloseHandle(hRead);
 	if (strRet != "SUCCESS\r\n")
 	{
-		m_MsgLabel->setString(GBKToUTF8("视频压缩失败或者视频录制不完整，请返回后重试！").c_str());
+		m_MsgLabel->setString(GBKToUTF8("上传失败！视频压缩或者视频录制不完整，请返回后重试！").c_str());
 		this->unscheduleUpdate();
 	}
 	CloseHandle(pi.hThread);
@@ -314,6 +319,7 @@ void UpLode::uploadVideo(string name)
 void UpLode::sendRequest()
 {
 	m_Acting = true;
+	m_MsgLabel->setString(GBKToUTF8("正在请求上传。。。").c_str());
 	CCHttpRequest* request = new CCHttpRequest();
 	request->setUrl("http://video.digitgolf.com/getName");
 	request->setRequestType(CCHttpRequest::kHttpGet);
