@@ -3,7 +3,7 @@
 #include "DataMager.h"
 #include "SerialMager.h"
 #include "SettingScene.h"
-#include "GolfXIMager.h"
+//#include "GolfXIMager.h"
 #include "MovieVideoLayer.h"
 #include "RecordClass.h"
 #include "MyMenu.h"
@@ -158,7 +158,7 @@ void HelloWorld::menuCallback(CCObject* pSender)
 	DataMager::shareDataMager()->SaveData();
 	//转到姿势分析界面
 	SerialMager::getInstence()->setThreshold(Ext_SerialThreshold);
-	GolfXIMager::getInstence()->setClubType(140);
+	//GolfXIMager::getInstence()->setClubType(140);
 
 	if (MovieVideoLayer::m_Camera1)
 	{
@@ -180,7 +180,6 @@ void HelloWorld::menuEndCallback(CCObject* pSender)
 		return;
 	}
 	Ext_IsTurnEnd = true;
-	sws_freeContext(MovieVideoLayer::pSwsCtx);
 	if (MovieVideoLayer::m_Camera1)
 	{
 		MovieVideoLayer::m_Camera1->Destructor();

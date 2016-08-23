@@ -1,5 +1,6 @@
 #include "UpLode.h"
 #include "PostureAnalysisScene.h"
+#include "SerialMager.h"
 #include "qrencode.h"
 #include <iostream>
 #include <fstream>
@@ -35,11 +36,12 @@ bool UpLode::init()
 	m_time = 0;
 	m_Acting = false;
 
-	m_MsgLabel = CCLabelTTF::create(GBKToUTF8("正在压缩视频。。。").c_str(), "Arial", 72);
-	m_MsgLabel->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.6));
+	m_MsgLabel = CCLabelTTF::create(GBKToUTF8("正在处理。。。").c_str(), "Arial", 72);
+	m_MsgLabel->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.75));
 	this->addChild(m_MsgLabel);
-	CCMenuItemImage* pItem = CCMenuItemImage::create("SettingUI/qdan1.png", "SettingUI/qdan2.png", this, menu_selector(UpLode::menuCallBack));
-	pItem->setPosition(ccp(100, 100));
+
+	CCMenuItemImage* pItem = CCMenuItemImage::create("Upload/fanhui1.png", "Upload/fanhui2.png", this, menu_selector(UpLode::menuCallBack));
+	pItem->setPosition(ccp(116, 1000));
 
 	MyMenu* pMenu = MyMenu::create(pItem, NULL);
 	pMenu->setPosition(ccp(0,0));
@@ -51,30 +53,42 @@ bool UpLode::init()
 void UpLode::menuCallBack(CCObject* obj)
 {
 	this->unscheduleUpdate();
+	this->removeChild(m_sp);
+	CCTextureCache::sharedTextureCache()->removeUnusedTextures();
 	CCDirector::sharedDirector()->popScene();
 }
 void UpLode::update(float dt)
 {
+	SerialMager::getInstence()->SeriaUpdate();
 	switch (m_time)
 	{
 		case 0:
+			m_QRText = "";
+			m_TextNum = 0;
 			PostureAnalysisScene::m_pFrontMovieVideoLayer->SeveVideo();
 			if (Ext_cameraNum == 2)
 			{
 				PostureAnalysisScene::m_pSideMovieVideoLayer->SeveVideo();
 			}
-			sendRequest();
-			m_time = 1;
+			m_time++;
 		break;
 		case 1:
 			if (m_Acting)
 			{
 				break;
 			}
-			uploadVideo("Upload/name1.mp4");
-			m_time = 2;
+			sendRequest();
+			m_time++;
 			break;
 		case 2:
+			if (m_Acting)
+			{
+				break;
+			}
+			uploadVideo("Upload/name1.mp4");
+			m_time++;
+			break;
+		case 3:
 			if (m_Acting)
 			{
 				break;
@@ -82,14 +96,14 @@ void UpLode::update(float dt)
 			if (Ext_cameraNum == 2)
 			{
 				sendRequest();
-				m_time = 3;
+				m_time++;
 			}
 			else
 			{
-				m_time = 4;
+				m_time = m_time+2;
 			}
 			break;
-		case 3:
+		case 4:
 			if (m_Acting)
 			{
 				break;
@@ -99,36 +113,38 @@ void UpLode::update(float dt)
 				if (!m_Acting)
 				{
 					uploadVideo("Upload/name2.mp4");
-					m_time = 4;
+					m_time++;
 				}
 			}
-			break;
-		case 4:
-			if (m_Acting)
-			{
-				break;
-			}
-			QRcodeBMP();
-			m_time = 5;
 			break;
 		case 5:
 			if (m_Acting)
 			{
 				break;
 			}
-			QRcodeBMPtoPNG();
-			m_time = 6;
+			QRcodeBMP();
+			m_time++;
 			break;
 		case 6:
 			if (m_Acting)
 			{
 				break;
 			}
-			m_MsgLabel->setString(GBKToUTF8("上传成功，请扫描下方二维码！").c_str());
-			CCSprite* sp = CCSprite::create("Upload/QRcode.png");
-			sp->setPosition(ccp(VISIBLEW/2,VISIBLEH*0.3));
-			this->addChild(sp);
-			m_time = 7;
+			QRcodeBMPtoPNG();
+			m_time++;
+			break;
+		case 7:
+			if (m_Acting)
+			{
+				break;
+			}
+			Sleep(500);
+			m_MsgLabel->setString(GBKToUTF8("微信扫描二维码分享！").c_str());
+			m_sp = CCSprite::create("Upload/QRcode.png");
+			m_sp->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.4));
+			m_sp->setScale(1.5);
+			this->addChild(m_sp);
+			m_time ++;
 			break;
 	}
 }
@@ -141,6 +157,7 @@ void UpLode::QRcodeBMP()
 	FILE*			f;
 
 	m_QRText = "http://video.digitgolf.com/?" + m_QRText;
+	//m_QRText = "http://video.digitgolf.com/?n1=imW7DZpw&n2=imW7DZpw";
 	if (pQRC = QRcode_encodeString(m_QRText.c_str(), 0, QR_ECLEVEL_H, QR_MODE_8, 1))
 	{
 		unWidth = pQRC->width;
@@ -308,7 +325,7 @@ void UpLode::uploadVideo(string name)
 	CloseHandle(hRead);
 	if (strRet != "SUCCESS\r\n")
 	{
-		m_MsgLabel->setString(GBKToUTF8("上传失败！视频压缩或者视频录制不完整，请返回后重试！").c_str());
+		m_MsgLabel->setString(GBKToUTF8("上传失败！视频录制不完整，请返回后重试！").c_str());
 		this->unscheduleUpdate();
 	}
 	CloseHandle(pi.hThread);
@@ -319,7 +336,6 @@ void UpLode::uploadVideo(string name)
 void UpLode::sendRequest()
 {
 	m_Acting = true;
-	m_MsgLabel->setString(GBKToUTF8("正在请求上传。。。").c_str());
 	CCHttpRequest* request = new CCHttpRequest();
 	request->setUrl("http://video.digitgolf.com/getName");
 	request->setRequestType(CCHttpRequest::kHttpGet);
@@ -361,14 +377,13 @@ void UpLode::onHttpRequestCompleted(cocos2d::CCNode *sender, void *data)
 	m_Name = string(vc->begin(), vc->end());
 	m_FileName = "Upload/" + m_Name + ".mp4";
 	m_TextNum++;
-	m_MsgLabel->setString(GBKToUTF8("请求成功，正在上传。。。").c_str());
 	if (m_TextNum == 2)
 	{
-		m_QRText += "&name2=" + m_Name;
+		m_QRText += "&n2=" + m_Name;
 	}
 	else
 	{
-		m_QRText = "name1=" + m_Name;
+		m_QRText = "n1=" + m_Name;
 	}
 	m_Acting = false;
 }

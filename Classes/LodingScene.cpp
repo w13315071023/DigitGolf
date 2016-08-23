@@ -1,5 +1,5 @@
 #include "LodingScene.h"
-#include "GolfXIMager.h"
+//#include "GolfXIMager.h"
 #include "SerialMager.h"
 #include "HelloWorldScene.h"
 #include "MovieVideoLayer.h"
@@ -47,7 +47,7 @@ bool LodingScene::init()
 		MovieVideoLayer::m_Camera2 = new RecordClass();
 		MovieVideoLayer::m_Camera2->init(cameraInfo[1]);
 	}
-
+	Ext_IsThreadOn = true;
 	Document doc;
 	if (readValue("Setting.json", doc))
 	{
@@ -74,8 +74,8 @@ void LodingScene::update(float dt)
 		CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
 		return;
 	}
-	if(GolfXIMager::getInstence()->RelevelXI())
-	{
-		CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
-	}
+	//if(GolfXIMager::getInstence()->RelevelXI())
+	//{
+	//	CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
+	//}
 }

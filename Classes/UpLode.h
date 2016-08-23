@@ -5,7 +5,7 @@
 
 #define PIXEL_COLOR_R				0											// Color of bmp pixels
 #define PIXEL_COLOR_G				0
-#define PIXEL_COLOR_B				0xff
+#define PIXEL_COLOR_B				0
 
 class UpLode : public CCLayerColor
 {
@@ -32,6 +32,7 @@ public:
 	string m_Name;
 	string m_QRText;
 	CCLabelTTF* m_MsgLabel;
+	CCSprite* m_sp;
 
 };
 

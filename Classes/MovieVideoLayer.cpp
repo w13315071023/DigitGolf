@@ -49,17 +49,19 @@ bool MovieVideoLayer::init(int Direction)
 	m_Width = 640;
 	m_Height = 480;
 
-	pSwsCtx = sws_getCachedContext(
-		pSwsCtx,
-		640,
-		480,
-		AV_PIX_FMT_BGR24,
-		640,
-		480,
-		AV_PIX_FMT_YUV420P,
-		SWS_POINT,
-		NULL, NULL, NULL);
-
+	if (!pSwsCtx)
+	{
+		pSwsCtx = sws_getCachedContext(
+			pSwsCtx,
+			640,
+			480,
+			AV_PIX_FMT_BGR24,
+			640,
+			480,
+			AV_PIX_FMT_YUV420P,
+			SWS_POINT,
+			NULL, NULL, NULL);
+	}
 	if (Ext_cameraNum == 0)
 	{
 		return true;
@@ -81,7 +83,7 @@ bool MovieVideoLayer::init(int Direction)
 	}
 	
 	m_pFrameImageRGB = (unsigned char*)av_malloc(m_Camera->BufferSize);
-	this->setRotation(180);
+	this->setRotationX(180);
 	CCSprite* beijing2 = CCSprite::create("VideoUI/beijing2.png");
 	beijing2->setPosition(ccp(VISIBLEW/2,VISIBLEH/2));
 	this->addChild(beijing2);
@@ -144,14 +146,14 @@ void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
 	this->Record(false);
-	if (m_Camera == m_Camera1)
-	{
-		pthread_mutex_lock(&m_Camera1->m_mutex1);
-	}
-	else
-	{
-		pthread_mutex_lock(&m_Camera2->m_mutex2);
-	}
+	//if (m_Camera == m_Camera1)
+	//{
+	//	pthread_mutex_lock(&m_Camera1->m_mutex1);
+	//}
+	//else
+	//{
+	//	pthread_mutex_lock(&m_Camera2->m_mutex2);
+	//}
 	for (size_t i = m_TransIndex; i < Ext_VideoSize * Ext_StepNum; i ++)
 	{
 		if (i == m_TransIndex+20)
@@ -162,21 +164,30 @@ void MovieVideoLayer::RecordOk()
 		curIndex = m_Camera->getBuffIndex() - Ext_VideoSize * Ext_StepNum + i;
 		curIndex = curIndex < 0 ? 300 + curIndex : curIndex;
 		m_FrameImageHead = m_Camera->getBufferByIndex(curIndex)->FrameHead;
-		CameraImageProcess(m_Camera->m_hCamera,
-			m_Camera->getBufferByIndex(curIndex)->FrameData,
-			m_pFrameImageRGB,
-			&m_FrameImageHead);
-		swap(m_pFrameImageRGB, m_VideoList[i]->FrameData);
-		m_VideoList[i]->FrameHead = m_FrameImageHead;
+		try
+		{
+			CameraImageProcess(m_Camera->m_hCamera,
+				m_Camera->getBufferByIndex(curIndex)->FrameData,
+				m_pFrameImageRGB,
+				&m_FrameImageHead);
+			swap(m_pFrameImageRGB, m_VideoList[i]->FrameData);
+			m_VideoList[i]->FrameHead = m_FrameImageHead;
+		}
+		catch (...)
+		{
+			FILE* CatchMsgFile = fopen("CatchMsgFile.txt", "a");
+			fprintf(CatchMsgFile, "CameraImageProssesError!\n");
+			fclose(CatchMsgFile);
+		}
 	}
-	if (m_Camera == m_Camera1)
-	{
-		pthread_mutex_unlock(&m_Camera1->m_mutex1);
-	}
-	else
-	{
-		pthread_mutex_unlock(&m_Camera2->m_mutex2);
-	}
+	//if (m_Camera == m_Camera1)
+	//{
+	//	pthread_mutex_unlock(&m_Camera1->m_mutex1);
+	//}
+	//else
+	//{
+	//	pthread_mutex_unlock(&m_Camera2->m_mutex2);
+	//}
 	m_VideoIter = m_VideoList.begin();
 }
 void MovieVideoLayer::ResetVideoSize()
@@ -365,10 +376,11 @@ void MovieVideoLayer::SeveVideo()
 
 	av_write_trailer(fmt_ctx);
 
-	avcodec_close(video_st.st->codec);
 	av_freep(m_pYUVFrame->data);
 	av_frame_free(&m_pYUVFrame);
 	av_frame_free(&m_pRGBFrame);
+
+	avcodec_close(video_st.st->codec);
 	if (!(fmt->flags & AVFMT_NOFILE))
 	{
 		avio_close(fmt_ctx->pb);

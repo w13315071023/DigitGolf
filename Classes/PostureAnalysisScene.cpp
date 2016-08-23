@@ -1,5 +1,5 @@
 #include "PostureAnalysisScene.h"
-#include "GolfXIMager.h"
+//#include "GolfXIMager.h"
 #include "DataMager.h"
 #include "UpLode.h"
 
@@ -133,12 +133,19 @@ bool PostureAnalysisScene::init()
 		NULL);
 	m_pPauseItemToggle->setTag(99);
 
-	m_pREWItem->setPosition(ccp(116, 346+150));
-	m_pFFItem->setPosition(ccp(116, 346+90));
-	m_pPauseItemToggle->setPosition(ccp(116, 346+30));
-	m_pRePlayItem->setPosition(ccp(116, 346-30));
-	m_pSpeedItem->setPosition(ccp(116, 346-90));
-	m_pPreview->setPosition(ccp(116, 346-150));
+	CCMenuItemImage* pUploadItem = CCMenuItemImage::create(
+		"VideoUI/shangchuan1.png",
+		"VideoUI/shangchuan2.png",
+		this,
+		menu_selector(PostureAnalysisScene::CallbackUpload));
+
+	m_pREWItem->setPosition(ccp(116, 375+150));
+	m_pFFItem->setPosition(ccp(116, 375 + 90));
+	m_pPauseItemToggle->setPosition(ccp(116, 375 + 30));
+	m_pRePlayItem->setPosition(ccp(116, 375 - 30));
+	m_pSpeedItem->setPosition(ccp(116, 375 - 90));
+	m_pPreview->setPosition(ccp(116, 375 - 150));
+	pUploadItem->setPosition(ccp(116, 375 - 210));
 
 	CCSprite* beijing4 = CCSprite::create("VideoUI/beijing4.png");
 	beijing4->setPosition(ccp(116, 80));
@@ -161,6 +168,7 @@ bool PostureAnalysisScene::init()
 	
 	m_pMenu = MyMenu::create(
 		pBackItem,
+		pUploadItem,
 		m_pREWItem,
 		m_pFFItem,
 		m_pRePlayItem,
@@ -340,14 +348,6 @@ bool PostureAnalysisScene::init()
 	//	pDataAnalysisItem->setTag(MENUTAG_DataAnalysis);
 	//	m_pMenu->addChild(pDataAnalysisItem);
 	//}
-	CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
-		"VideoUI/shujufenxi1.png",
-		"VideoUI/shujufenxi2.png",
-		this,
-		menu_selector(PostureAnalysisScene::CallbackUpload));
-	pDataAnalysisItem->setPosition(ccp(116, 915));
-	m_pMenu->addChild(pDataAnalysisItem);
-
 	//else
 	//{
 	//	CCMenuItemImage* pDataAnalysisItem = CCMenuItemImage::create(
@@ -589,24 +589,24 @@ void PostureAnalysisScene::Update(float dt)
 		CCMessageBox("请链接小盒子", "警告！");
 		CCDirector::sharedDirector()->end();
 	}
-	if (Ext_IsGolfXI)
-	{
-		GolfXIMager::getInstence()->DeviceUpdate();
+	//if (Ext_IsGolfXI)
+	//{
+	//	GolfXIMager::getInstence()->DeviceUpdate();
 
-		if (GolfXIMager::m_IsHitBall == true)
-		{
-			DataMager::shareDataMager()->PushData(
-				GolfXIMager::getInstence()->m_curBackSpin,
-				GolfXIMager::getInstence()->m_curSideSpin,
-				GolfXIMager::getInstence()->m_curVAngle,
-				GolfXIMager::getInstence()->m_curHAngle,
-				GolfXIMager::getInstence()->m_curBallSpeed,
-				0
-				);
-			DataMager::shareDataMager()->SaveData();
-			GolfXIMager::m_IsHitBall = false;
-		}
-	}
+	//	if (GolfXIMager::m_IsHitBall == true)
+	//	{
+	//		DataMager::shareDataMager()->PushData(
+	//			GolfXIMager::getInstence()->m_curBackSpin,
+	//			GolfXIMager::getInstence()->m_curSideSpin,
+	//			GolfXIMager::getInstence()->m_curVAngle,
+	//			GolfXIMager::getInstence()->m_curHAngle,
+	//			GolfXIMager::getInstence()->m_curBallSpeed,
+	//			0
+	//			);
+	//		DataMager::shareDataMager()->SaveData();
+	//		GolfXIMager::m_IsHitBall = false;
+	//	}
+	//}
 	SerialMager::getInstence()->SeriaUpdate();
 	if (m_bIsPlayVideo == true)
 	{
