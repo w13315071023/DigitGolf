@@ -32,6 +32,7 @@ public:
 	string m_Name;
 	string m_QRText;
 	CCLabelTTF* m_MsgLabel;
+	CCTexture2D* m_pTexture;
 	CCSprite* m_sp;
 
 };

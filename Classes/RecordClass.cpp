@@ -50,7 +50,6 @@ bool RecordClass::init(tSdkCameraDevInfo CameraInfo)
 	}
 
 	BufferSize = m_sCameraInfo.sResolutionRange.iWidthMax*m_sCameraInfo.sResolutionRange.iHeightMax * 3;
-	std::thread myThread(&RecordClass::ThreadCallBack, this);
 	
 	//if (m_hCamera == 1)
 	//{
@@ -61,6 +60,7 @@ bool RecordClass::init(tSdkCameraDevInfo CameraInfo)
 	//	pthread_mutex_init(&m_mutex2, NULL);
 	//}
 
+	std::thread myThread(&RecordClass::ThreadCallBack, this);
 	SetThreadPriority(myThread.native_handle(), THREAD_PRIORITY_HIGHEST);
 	myThread.detach();
 
@@ -70,45 +70,12 @@ void RecordClass::ThreadCallBack()
 {
 	BYTE* bydFrameBuffer;
 	tSdkFrameHead FrameInfo;
-	bool ThreadLock = false;
 	while (!Ext_IsTurnEnd)
 	{
-		//if (Ext_IsThreadOn != ThreadLock)
-		//{
-		//	ThreadLock = Ext_IsThreadOn;
-		//	if (Ext_IsThreadOn)
-		//	{
-		//		if (m_hCamera == 1)
-		//		{
-		//			pthread_mutex_lock(&m_mutex1);
-		//		}
-		//		else
-		//		{
-		//			pthread_mutex_lock(&m_mutex2);
-		//		}
-		//	}
-		//	else
-		//	{
-		//		if (m_hCamera == 1)
-		//		{
-		//			pthread_mutex_unlock(&m_mutex1);
-		//		}
-		//		else
-		//		{
-		//			pthread_mutex_unlock(&m_mutex2);
-		//		}
-		//	}
-		//}
-
 		if (Ext_IsThreadOn)
 		{
 			if (!CameraGetImageBuffer(m_hCamera, &FrameInfo, &bydFrameBuffer, 20))
 			{
-				//m_curTime = GetTime();
-				//printf("%pÊ±¼ä¼ä¸ô%f\n", this, m_curTime - m_lastTime);
-				//m_lastTime = m_curTime;
-
-				//CameraImageProcess(m_hCamera, bydFrameBuffer, FrameBufferRGB24, &FrameInfo);
 				memcpy(m_Buffer[m_BufferIndex]->FrameData, bydFrameBuffer, FrameInfo.uBytes);
 				m_Buffer[m_BufferIndex]->FrameHead = FrameInfo;
 				m_BufferIndex = (m_BufferIndex + 1) % 300;

@@ -24,6 +24,7 @@ UpLode::UpLode(void)
 
 UpLode::~UpLode(void)
 {
+	m_pTexture->release();
 }
 bool UpLode::init()
 {
@@ -36,6 +37,8 @@ bool UpLode::init()
 	m_time = 0;
 	m_Acting = false;
 
+	m_pTexture = new CCTexture2D();
+	
 	m_MsgLabel = CCLabelTTF::create(GBKToUTF8("正在处理。。。").c_str(), "Arial", 72);
 	m_MsgLabel->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.75));
 	this->addChild(m_MsgLabel);
@@ -140,7 +143,8 @@ void UpLode::update(float dt)
 			}
 			Sleep(500);
 			m_MsgLabel->setString(GBKToUTF8("微信扫描二维码分享！").c_str());
-			m_sp = CCSprite::create("Upload/QRcode.png");
+			//m_sp = CCSprite::create("Upload/QRcode.png");
+			m_sp = CCSprite::createWithTexture(m_pTexture);
 			m_sp->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.4));
 			m_sp->setScale(1.5);
 			this->addChild(m_sp);
@@ -154,7 +158,6 @@ void UpLode::QRcodeBMP()
 	unsigned int	unWidth, x, y, l, n, unWidthAdjusted, unDataBytes;
 	unsigned char*	pRGBData, *pSourceData, *pDestData;
 	QRcode*			pQRC;
-	FILE*			f;
 
 	m_QRText = "http://video.digitgolf.com/?" + m_QRText;
 	//m_QRText = "http://video.digitgolf.com/?n1=imW7DZpw&n2=imW7DZpw";
@@ -176,29 +179,6 @@ void UpLode::QRcodeBMP()
 
 
 		memset(pRGBData, 0xff, unDataBytes);
-
-		BITMAPFILEHEADER kFileHeader;
-		kFileHeader.bfType = 0x4d42;  // "BM"
-		kFileHeader.bfSize = sizeof(BITMAPFILEHEADER) +
-			sizeof(BITMAPINFOHEADER) +
-			unDataBytes;
-		kFileHeader.bfReserved1 = 0;
-		kFileHeader.bfReserved2 = 0;
-		kFileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) +
-			sizeof(BITMAPINFOHEADER);
-
-		BITMAPINFOHEADER kInfoHeader;
-		kInfoHeader.biSize = sizeof(BITMAPINFOHEADER);
-		kInfoHeader.biWidth = unWidth * OUT_FILE_PIXEL_PRESCALER;
-		kInfoHeader.biHeight = -((int)unWidth * OUT_FILE_PIXEL_PRESCALER);
-		kInfoHeader.biPlanes = 1;
-		kInfoHeader.biBitCount = 24;
-		kInfoHeader.biCompression = BI_RGB;
-		kInfoHeader.biSizeImage = 0;
-		kInfoHeader.biXPelsPerMeter = 0;
-		kInfoHeader.biYPelsPerMeter = 0;
-		kInfoHeader.biClrUsed = 0;
-		kInfoHeader.biClrImportant = 0;
 
 		pSourceData = pQRC->data;
 		for (y = 0; y < unWidth; y++)
@@ -222,19 +202,12 @@ void UpLode::QRcodeBMP()
 				pSourceData++;
 			}
 		}
-		if (!(fopen_s(&f, "Upload/QRcode.BMP", "wb + ")))
-		{
-			fwrite(&kFileHeader, sizeof(BITMAPFILEHEADER), 1, f);
-			fwrite(&kInfoHeader, sizeof(BITMAPINFOHEADER), 1, f);
-			fwrite(pRGBData, sizeof(unsigned char), unDataBytes, f);
-
-			fclose(f);
-		}
-		else
-		{
-			printf("Unable to open file");
-			exit(-1);
-		}
+		m_pTexture->initWithData(
+			pRGBData,
+			kTexture2DPixelFormat_RGB888,
+			unWidth * OUT_FILE_PIXEL_PRESCALER,
+			unWidth * OUT_FILE_PIXEL_PRESCALER,
+			CCSize(unWidth * OUT_FILE_PIXEL_PRESCALER, unWidth * OUT_FILE_PIXEL_PRESCALER));
 		// Free data
 
 		free(pRGBData);
