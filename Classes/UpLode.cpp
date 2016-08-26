@@ -133,14 +133,6 @@ void UpLode::update(float dt)
 			{
 				break;
 			}
-			QRcodeBMPtoPNG();
-			m_time++;
-			break;
-		case 7:
-			if (m_Acting)
-			{
-				break;
-			}
 			Sleep(500);
 			m_MsgLabel->setString(GBKToUTF8("微信扫描二维码分享！").c_str());
 			//m_sp = CCSprite::create("Upload/QRcode.png");
@@ -218,38 +210,6 @@ void UpLode::QRcodeBMP()
 		printf("NULL returned");
 		exit(-1);
 	}
-	m_Acting = false;
-}
-void UpLode::QRcodeBMPtoPNG()
-{
-	m_Acting = true;
-	int error;
-	STARTUPINFO si;
-	memset(&si, 0, sizeof(STARTUPINFO));
-	si.cb = sizeof(STARTUPINFO);
-	si.dwFlags = STARTF_USESHOWWINDOW;
-	si.wShowWindow = SW_HIDE;
-	PROCESS_INFORMATION pi;
-	string cmdline = "ffmpeg -y -i Upload/QRcode.bmp Upload/QRcode.png";
-
-	TCHAR Name[100];
-	MultiByteToWideChar(CP_ACP, 0, cmdline.c_str(), -1, Name, 100);
-
-	error = CreateProcess(TEXT("Upload/ffmpeg.exe"),
-		Name,
-		NULL,
-		NULL,
-		FALSE,
-		CREATE_NEW_CONSOLE,
-		NULL,
-		NULL,
-		&si,
-		&pi);
-	error = GetLastError();
-	//不使用的句柄最好关掉
-	CloseHandle(pi.hThread);
-	WaitForSingleObject(pi.hProcess, INFINITE);
-	CloseHandle(pi.hProcess);
 	m_Acting = false;
 }
 void UpLode::uploadVideo(string name)

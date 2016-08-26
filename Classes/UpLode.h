@@ -20,7 +20,6 @@ public:
 	void update(float dt);
 	void menuCallBack(CCObject* obj);
 	void QRcodeBMP();
-	void QRcodeBMPtoPNG();
 	void uploadVideo(string name);
 	void sendRequest();
 	void onHttpRequestCompleted(cocos2d::CCNode *sender, void *data);
