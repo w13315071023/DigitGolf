@@ -96,12 +96,19 @@ void MovieVideoLayer::update(float dt)
 {
 	m_ShowIndex = (m_Camera->getBuffIndex() - 1<0) ? 299 : m_Camera->getBuffIndex() - 1;
 	m_FrameImageHead = m_Camera->getBufferByIndex(m_ShowIndex)->FrameHead;
-
-	CameraImageProcess(m_Camera->m_hCamera,
-		m_Camera->getBufferByIndex(m_ShowIndex)->FrameData,
-		m_pFrameImageRGB,
-		&m_FrameImageHead);
-
+	try
+	{
+		CameraImageProcess(m_Camera->m_hCamera,
+			m_Camera->getBufferByIndex(m_ShowIndex)->FrameData,
+			m_pFrameImageRGB,
+			&m_FrameImageHead);
+	}
+	catch (...)
+	{
+		FILE* CatchMsgFile = fopen("CatchMsgFile.txt", "a");
+		fprintf(CatchMsgFile, "CameraImageProssesError!\n");
+		fclose(CatchMsgFile);
+	}
 	m_pTexture->updateVideoWithData(
 		m_pFrameImageRGB,
 		kTexture2DPixelFormat_RGB888,
@@ -146,14 +153,6 @@ void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
 	this->Record(false);
-	//if (m_Camera == m_Camera1)
-	//{
-	//	pthread_mutex_lock(&m_Camera1->m_mutex1);
-	//}
-	//else
-	//{
-	//	pthread_mutex_lock(&m_Camera2->m_mutex2);
-	//}
 	for (size_t i = m_TransIndex; i < Ext_VideoSize * Ext_StepNum; i ++)
 	{
 		if (i == m_TransIndex+20)
@@ -180,14 +179,6 @@ void MovieVideoLayer::RecordOk()
 			fclose(CatchMsgFile);
 		}
 	}
-	//if (m_Camera == m_Camera1)
-	//{
-	//	pthread_mutex_unlock(&m_Camera1->m_mutex1);
-	//}
-	//else
-	//{
-	//	pthread_mutex_unlock(&m_Camera2->m_mutex2);
-	//}
 	m_VideoIter = m_VideoList.begin();
 }
 void MovieVideoLayer::ResetVideoSize()
@@ -376,7 +367,6 @@ void MovieVideoLayer::SeveVideo()
 
 	av_write_trailer(fmt_ctx);
 
-	av_freep(m_pYUVFrame->data);
 	av_frame_free(&m_pYUVFrame);
 	av_frame_free(&m_pRGBFrame);
 
