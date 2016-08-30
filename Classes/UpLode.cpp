@@ -135,7 +135,6 @@ void UpLode::update(float dt)
 			}
 			Sleep(500);
 			m_MsgLabel->setString(GBKToUTF8("Î¢ÐÅÉ¨Ãè¶þÎ¬Âë·ÖÏí£¡").c_str());
-			//m_sp = CCSprite::create("Upload/QRcode.png");
 			m_sp = CCSprite::createWithTexture(m_pTexture);
 			m_sp->setPosition(ccp(VISIBLEW / 2, VISIBLEH*0.4));
 			m_sp->setScale(1.5);
