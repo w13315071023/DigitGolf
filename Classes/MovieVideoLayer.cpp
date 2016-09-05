@@ -153,7 +153,7 @@ void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
 	this->Record(false);
-	for (size_t i = m_TransIndex; i < Ext_VideoSize * Ext_StepNum; i ++)
+	for (size_t i = 0; i < Ext_VideoSize * Ext_StepNum; i ++)
 	{
 		if (i == m_TransIndex+20)
 		{
