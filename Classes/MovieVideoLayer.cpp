@@ -152,6 +152,7 @@ void MovieVideoLayer::TransData()
 void MovieVideoLayer::RecordOk()
 {
 	int curIndex = 0;
+	m_TransIndex = 0;
 	this->Record(false);
 	for (size_t i = 0; i < Ext_VideoSize * Ext_StepNum; i ++)
 	{
@@ -349,6 +350,7 @@ void MovieVideoLayer::SeveVideo()
 	for (size_t i = 0; i < m_VideoList.size(); i++)
 	{
 		AVPacket pkt;
+		memset(&pkt,0,sizeof(AVPacket));
 		av_init_packet(&pkt);
 		ret = av_frame_make_writable(video_st.videoFrame);
 		fill_yuv_image(i);
